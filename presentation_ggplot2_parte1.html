@@ -1,0 +1,3826 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+  <head>
+    <title>Mejora tus gráficos con ggplot2 parte 1</title>
+    <meta charset="utf-8" />
+    <meta name="author" content="Mireia Ramos-Rodríguez" />
+    <link href="libs/remark-css-0.0.1/default.css" rel="stylesheet" />
+    <link href="libs/remark-css-0.0.1/rladies.css" rel="stylesheet" />
+    <link href="libs/remark-css-0.0.1/rladies-fonts.css" rel="stylesheet" />
+    <script src="libs/kePrint-0.0.1/kePrint.js"></script>
+    <link href="libs/lightable-0.0.1/lightable.css" rel="stylesheet" />
+    <link rel="stylesheet" href="custom.css" type="text/css" />
+  </head>
+  <body>
+    <textarea id="source">
+class: center, middle, inverse, title-slide
+
+# Mejora tus gráficos con <code>ggplot2</code> parte 1
+## ⚔<br/>R-Ladies Barcelona Workshop
+### Mireia Ramos-Rodríguez
+### 2021-03-08<br/><br/>(adaptado al español y modificado por Andree Valle Campos)
+
+---
+
+class: inverse, center, middle
+
+
+
+
+
+
+
+---
+class: center, middle
+
+# ¡Los personajes!
+
+&lt;img src="https://allisonhorst.github.io/palmerpenguins/man/figures/lter_penguins.png" width="70%" /&gt;
+
+---
+class: center, middle
+
+# ¡Las variables!
+
+&lt;img src="https://raw.githubusercontent.com/SamanthaToet/intro-to-flexdashboard/master/culmen_depth.png" width="60%" /&gt;
+
+---
+class: inverse, center, middle
+
+# La gramática de `ggplot2`
+
+&lt;!---------------------------------------- BUILDING PLOTS one layer at a time -----------------------------------&gt;
+---
+layout: true
+class: left, top
+
+## Construyendo gráficos una capa por tiempo
+
+---
+.left-code[
+
+```r
+pinguinos
+```
+
+### Data
+
+]
+.right-plot[
+&lt;div style="border: 1px solid #ddd; padding: 0px; overflow-y: scroll; height:500px; "&gt;&lt;table class="table" style="font-size: 18px; margin-left: auto; margin-right: auto;"&gt;
+ &lt;thead&gt;
+  &lt;tr&gt;
+   &lt;th style="text-align:left;position: sticky; top:0; background-color: #FFFFFF;"&gt; species &lt;/th&gt;
+   &lt;th style="text-align:left;position: sticky; top:0; background-color: #FFFFFF;"&gt; island &lt;/th&gt;
+   &lt;th style="text-align:right;position: sticky; top:0; background-color: #FFFFFF;"&gt; bill_length_mm &lt;/th&gt;
+   &lt;th style="text-align:right;position: sticky; top:0; background-color: #FFFFFF;"&gt; bill_depth_mm &lt;/th&gt;
+   &lt;th style="text-align:left;position: sticky; top:0; background-color: #FFFFFF;"&gt; sex &lt;/th&gt;
+   &lt;th style="text-align:right;position: sticky; top:0; background-color: #FFFFFF;"&gt; year &lt;/th&gt;
+  &lt;/tr&gt;
+ &lt;/thead&gt;
+&lt;tbody&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; Adelie &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Torgersen &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 39.1 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 18.7 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; male &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 2007 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; Adelie &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Torgersen &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 39.5 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 17.4 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; female &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 2007 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; Adelie &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Torgersen &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 40.3 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 18.0 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; female &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 2007 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; Adelie &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Torgersen &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 36.7 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 19.3 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; female &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 2007 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; Adelie &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Torgersen &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 39.3 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 20.6 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; male &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 2007 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; Adelie &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Torgersen &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 38.9 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 17.8 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; female &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 2007 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; Adelie &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Torgersen &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 39.2 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 19.6 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; male &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 2007 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; Adelie &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Torgersen &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 34.1 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 18.1 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; NA &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 2007 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; Adelie &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Torgersen &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 42.0 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 20.2 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; NA &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 2007 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; Adelie &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Torgersen &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 37.8 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 17.1 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; NA &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 2007 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; Adelie &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Torgersen &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 37.8 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 17.3 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; NA &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 2007 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; Adelie &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Torgersen &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 41.1 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 17.6 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; female &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 2007 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; Adelie &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Torgersen &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 38.6 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 21.2 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; male &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 2007 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; Adelie &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Torgersen &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 34.6 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 21.1 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; male &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 2007 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; Adelie &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Torgersen &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 36.6 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 17.8 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; female &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 2007 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; Adelie &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Torgersen &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 38.7 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 19.0 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; female &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 2007 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; Adelie &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Torgersen &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 42.5 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 20.7 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; male &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 2007 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; Adelie &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Torgersen &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 34.4 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 18.4 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; female &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 2007 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; Adelie &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Torgersen &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 46.0 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 21.5 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; male &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 2007 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; Adelie &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Biscoe &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 37.8 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 18.3 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; female &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 2007 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; Adelie &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Biscoe &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 37.7 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 18.7 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; male &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 2007 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; Adelie &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Biscoe &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 35.9 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 19.2 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; female &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 2007 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; Adelie &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Biscoe &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 38.2 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 18.1 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; male &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 2007 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; Adelie &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Biscoe &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 38.8 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 17.2 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; male &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 2007 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; Adelie &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Biscoe &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 35.3 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 18.9 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; female &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 2007 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; Adelie &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Biscoe &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 40.6 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 18.6 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; male &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 2007 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; Adelie &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Biscoe &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 40.5 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 17.9 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; female &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 2007 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; Adelie &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Biscoe &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 37.9 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 18.6 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; female &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 2007 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; Adelie &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Biscoe &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 40.5 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 18.9 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; male &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 2007 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; Adelie &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Dream &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 39.5 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 16.7 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; female &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 2007 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; Adelie &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Dream &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 37.2 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 18.1 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; male &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 2007 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; Adelie &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Dream &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 39.5 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 17.8 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; female &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 2007 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; Adelie &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Dream &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 40.9 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 18.9 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; male &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 2007 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; Adelie &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Dream &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 36.4 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 17.0 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; female &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 2007 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; Adelie &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Dream &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 39.2 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 21.1 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; male &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 2007 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; Adelie &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Dream &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 38.8 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 20.0 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; male &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 2007 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; Adelie &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Dream &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 42.2 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 18.5 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; female &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 2007 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; Adelie &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Dream &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 37.6 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 19.3 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; female &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 2007 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; Adelie &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Dream &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 39.8 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 19.1 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; male &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 2007 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; Adelie &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Dream &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 36.5 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 18.0 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; female &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 2007 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; Adelie &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Dream &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 40.8 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 18.4 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; male &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 2007 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; Adelie &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Dream &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 36.0 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 18.5 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; female &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 2007 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; Adelie &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Dream &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 44.1 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 19.7 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; male &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 2007 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; Adelie &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Dream &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 37.0 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 16.9 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; female &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 2007 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; Adelie &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Dream &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 39.6 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 18.8 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; male &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 2007 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; Adelie &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Dream &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 41.1 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 19.0 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; male &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 2007 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; Adelie &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Dream &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 37.5 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 18.9 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; NA &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 2007 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; Adelie &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Dream &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 36.0 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 17.9 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; female &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 2007 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; Adelie &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Dream &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 42.3 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 21.2 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; male &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 2007 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; Adelie &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Biscoe &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 39.6 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 17.7 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; female &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 2008 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; Adelie &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Biscoe &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 40.1 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 18.9 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; male &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 2008 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; Adelie &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Biscoe &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 35.0 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 17.9 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; female &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 2008 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; Adelie &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Biscoe &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 42.0 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 19.5 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; male &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 2008 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; Adelie &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Biscoe &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 34.5 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 18.1 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; female &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 2008 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; Adelie &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Biscoe &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 41.4 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 18.6 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; male &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 2008 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; Adelie &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Biscoe &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 39.0 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 17.5 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; female &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 2008 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; Adelie &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Biscoe &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 40.6 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 18.8 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; male &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 2008 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; Adelie &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Biscoe &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 36.5 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 16.6 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; female &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 2008 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; Adelie &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Biscoe &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 37.6 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 19.1 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; male &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 2008 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; Adelie &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Biscoe &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 35.7 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 16.9 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; female &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 2008 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; Adelie &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Biscoe &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 41.3 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 21.1 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; male &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 2008 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; Adelie &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Biscoe &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 37.6 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 17.0 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; female &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 2008 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; Adelie &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Biscoe &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 41.1 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 18.2 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; male &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 2008 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; Adelie &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Biscoe &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 36.4 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 17.1 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; female &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 2008 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; Adelie &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Biscoe &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 41.6 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 18.0 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; male &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 2008 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; Adelie &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Biscoe &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 35.5 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 16.2 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; female &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 2008 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; Adelie &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Biscoe &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 41.1 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 19.1 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; male &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 2008 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; Adelie &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Torgersen &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 35.9 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 16.6 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; female &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 2008 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; Adelie &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Torgersen &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 41.8 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 19.4 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; male &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 2008 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; Adelie &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Torgersen &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 33.5 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 19.0 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; female &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 2008 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; Adelie &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Torgersen &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 39.7 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 18.4 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; male &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 2008 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; Adelie &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Torgersen &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 39.6 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 17.2 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; female &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 2008 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; Adelie &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Torgersen &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 45.8 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 18.9 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; male &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 2008 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; Adelie &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Torgersen &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 35.5 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 17.5 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; female &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 2008 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; Adelie &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Torgersen &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 42.8 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 18.5 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; male &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 2008 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; Adelie &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Torgersen &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 40.9 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 16.8 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; female &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 2008 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; Adelie &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Torgersen &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 37.2 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 19.4 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; male &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 2008 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; Adelie &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Torgersen &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 36.2 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 16.1 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; female &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 2008 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; Adelie &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Torgersen &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 42.1 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 19.1 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; male &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 2008 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; Adelie &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Torgersen &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 34.6 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 17.2 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; female &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 2008 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; Adelie &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Torgersen &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 42.9 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 17.6 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; male &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 2008 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; Adelie &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Torgersen &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 36.7 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 18.8 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; female &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 2008 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; Adelie &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Torgersen &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 35.1 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 19.4 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; male &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 2008 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; Adelie &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Dream &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 37.3 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 17.8 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; female &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 2008 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; Adelie &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Dream &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 41.3 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 20.3 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; male &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 2008 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; Adelie &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Dream &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 36.3 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 19.5 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; male &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 2008 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; Adelie &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Dream &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 36.9 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 18.6 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; female &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 2008 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; Adelie &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Dream &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 38.3 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 19.2 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; male &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 2008 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; Adelie &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Dream &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 38.9 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 18.8 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; female &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 2008 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; Adelie &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Dream &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 35.7 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 18.0 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; female &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 2008 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; Adelie &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Dream &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 41.1 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 18.1 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; male &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 2008 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; Adelie &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Dream &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 34.0 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 17.1 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; female &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 2008 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; Adelie &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Dream &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 39.6 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 18.1 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; male &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 2008 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; Adelie &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Dream &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 36.2 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 17.3 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; female &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 2008 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; Adelie &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Dream &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 40.8 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 18.9 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; male &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 2008 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; Adelie &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Dream &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 38.1 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 18.6 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; female &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 2008 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; Adelie &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Dream &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 40.3 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 18.5 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; male &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 2008 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; Adelie &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Dream &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 33.1 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 16.1 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; female &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 2008 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; Adelie &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Dream &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 43.2 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 18.5 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; male &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 2008 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; Adelie &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Biscoe &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 35.0 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 17.9 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; female &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 2009 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; Adelie &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Biscoe &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 41.0 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 20.0 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; male &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 2009 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; Adelie &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Biscoe &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 37.7 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 16.0 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; female &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 2009 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; Adelie &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Biscoe &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 37.8 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 20.0 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; male &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 2009 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; Adelie &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Biscoe &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 37.9 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 18.6 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; female &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 2009 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; Adelie &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Biscoe &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 39.7 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 18.9 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; male &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 2009 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; Adelie &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Biscoe &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 38.6 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 17.2 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; female &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 2009 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; Adelie &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Biscoe &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 38.2 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 20.0 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; male &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 2009 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; Adelie &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Biscoe &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 38.1 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 17.0 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; female &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 2009 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; Adelie &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Biscoe &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 43.2 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 19.0 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; male &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 2009 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; Adelie &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Biscoe &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 38.1 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 16.5 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; female &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 2009 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; Adelie &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Biscoe &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 45.6 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 20.3 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; male &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 2009 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; Adelie &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Biscoe &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 39.7 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 17.7 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; female &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 2009 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; Adelie &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Biscoe &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 42.2 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 19.5 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; male &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 2009 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; Adelie &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Biscoe &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 39.6 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 20.7 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; female &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 2009 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; Adelie &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Biscoe &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 42.7 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 18.3 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; male &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 2009 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; Adelie &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Torgersen &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 38.6 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 17.0 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; female &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 2009 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; Adelie &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Torgersen &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 37.3 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 20.5 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; male &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 2009 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; Adelie &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Torgersen &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 35.7 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 17.0 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; female &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 2009 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; Adelie &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Torgersen &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 41.1 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 18.6 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; male &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 2009 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; Adelie &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Torgersen &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 36.2 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 17.2 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; female &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 2009 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; Adelie &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Torgersen &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 37.7 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 19.8 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; male &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 2009 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; Adelie &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Torgersen &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 40.2 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 17.0 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; female &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 2009 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; Adelie &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Torgersen &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 41.4 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 18.5 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; male &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 2009 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; Adelie &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Torgersen &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 35.2 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 15.9 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; female &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 2009 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; Adelie &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Torgersen &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 40.6 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 19.0 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; male &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 2009 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; Adelie &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Torgersen &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 38.8 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 17.6 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; female &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 2009 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; Adelie &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Torgersen &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 41.5 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 18.3 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; male &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 2009 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; Adelie &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Torgersen &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 39.0 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 17.1 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; female &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 2009 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; Adelie &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Torgersen &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 44.1 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 18.0 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; male &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 2009 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; Adelie &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Torgersen &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 38.5 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 17.9 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; female &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 2009 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; Adelie &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Torgersen &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 43.1 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 19.2 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; male &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 2009 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; Adelie &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Dream &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 36.8 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 18.5 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; female &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 2009 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; Adelie &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Dream &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 37.5 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 18.5 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; male &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 2009 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; Adelie &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Dream &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 38.1 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 17.6 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; female &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 2009 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; Adelie &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Dream &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 41.1 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 17.5 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; male &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 2009 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; Adelie &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Dream &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 35.6 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 17.5 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; female &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 2009 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; Adelie &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Dream &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 40.2 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 20.1 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; male &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 2009 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; Adelie &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Dream &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 37.0 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 16.5 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; female &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 2009 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; Adelie &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Dream &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 39.7 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 17.9 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; male &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 2009 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; Adelie &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Dream &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 40.2 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 17.1 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; female &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 2009 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; Adelie &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Dream &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 40.6 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 17.2 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; male &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 2009 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; Adelie &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Dream &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 32.1 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 15.5 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; female &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 2009 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; Adelie &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Dream &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 40.7 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 17.0 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; male &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 2009 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; Adelie &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Dream &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 37.3 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 16.8 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; female &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 2009 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; Adelie &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Dream &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 39.0 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 18.7 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; male &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 2009 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; Adelie &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Dream &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 39.2 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 18.6 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; male &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 2009 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; Adelie &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Dream &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 36.6 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 18.4 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; female &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 2009 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; Adelie &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Dream &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 36.0 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 17.8 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; female &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 2009 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; Adelie &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Dream &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 37.8 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 18.1 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; male &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 2009 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; Adelie &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Dream &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 36.0 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 17.1 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; female &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 2009 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; Adelie &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Dream &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 41.5 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 18.5 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; male &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 2009 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; Gentoo &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Biscoe &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 46.1 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 13.2 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; female &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 2007 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; Gentoo &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Biscoe &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 50.0 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 16.3 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; male &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 2007 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; Gentoo &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Biscoe &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 48.7 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 14.1 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; female &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 2007 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; Gentoo &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Biscoe &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 50.0 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 15.2 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; male &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 2007 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; Gentoo &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Biscoe &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 47.6 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 14.5 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; male &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 2007 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; Gentoo &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Biscoe &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 46.5 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 13.5 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; female &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 2007 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; Gentoo &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Biscoe &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 45.4 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 14.6 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; female &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 2007 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; Gentoo &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Biscoe &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 46.7 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 15.3 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; male &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 2007 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; Gentoo &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Biscoe &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 43.3 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 13.4 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; female &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 2007 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; Gentoo &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Biscoe &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 46.8 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 15.4 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; male &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 2007 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; Gentoo &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Biscoe &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 40.9 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 13.7 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; female &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 2007 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; Gentoo &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Biscoe &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 49.0 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 16.1 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; male &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 2007 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; Gentoo &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Biscoe &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 45.5 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 13.7 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; female &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 2007 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; Gentoo &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Biscoe &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 48.4 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 14.6 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; male &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 2007 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; Gentoo &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Biscoe &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 45.8 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 14.6 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; female &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 2007 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; Gentoo &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Biscoe &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 49.3 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 15.7 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; male &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 2007 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; Gentoo &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Biscoe &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 42.0 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 13.5 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; female &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 2007 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; Gentoo &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Biscoe &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 49.2 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 15.2 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; male &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 2007 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; Gentoo &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Biscoe &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 46.2 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 14.5 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; female &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 2007 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; Gentoo &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Biscoe &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 48.7 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 15.1 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; male &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 2007 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; Gentoo &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Biscoe &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 50.2 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 14.3 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; male &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 2007 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; Gentoo &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Biscoe &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 45.1 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 14.5 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; female &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 2007 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; Gentoo &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Biscoe &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 46.5 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 14.5 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; female &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 2007 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; Gentoo &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Biscoe &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 46.3 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 15.8 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; male &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 2007 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; Gentoo &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Biscoe &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 42.9 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 13.1 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; female &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 2007 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; Gentoo &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Biscoe &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 46.1 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 15.1 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; male &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 2007 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; Gentoo &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Biscoe &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 44.5 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 14.3 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; NA &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 2007 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; Gentoo &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Biscoe &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 47.8 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 15.0 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; male &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 2007 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; Gentoo &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Biscoe &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 48.2 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 14.3 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; female &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 2007 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; Gentoo &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Biscoe &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 50.0 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 15.3 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; male &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 2007 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; Gentoo &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Biscoe &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 47.3 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 15.3 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; male &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 2007 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; Gentoo &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Biscoe &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 42.8 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 14.2 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; female &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 2007 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; Gentoo &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Biscoe &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 45.1 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 14.5 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; female &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 2007 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; Gentoo &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Biscoe &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 59.6 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 17.0 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; male &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 2007 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; Gentoo &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Biscoe &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 49.1 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 14.8 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; female &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 2008 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; Gentoo &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Biscoe &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 48.4 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 16.3 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; male &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 2008 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; Gentoo &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Biscoe &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 42.6 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 13.7 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; female &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 2008 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; Gentoo &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Biscoe &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 44.4 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 17.3 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; male &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 2008 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; Gentoo &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Biscoe &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 44.0 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 13.6 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; female &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 2008 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; Gentoo &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Biscoe &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 48.7 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 15.7 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; male &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 2008 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; Gentoo &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Biscoe &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 42.7 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 13.7 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; female &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 2008 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; Gentoo &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Biscoe &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 49.6 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 16.0 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; male &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 2008 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; Gentoo &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Biscoe &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 45.3 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 13.7 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; female &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 2008 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; Gentoo &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Biscoe &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 49.6 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 15.0 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; male &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 2008 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; Gentoo &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Biscoe &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 50.5 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 15.9 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; male &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 2008 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; Gentoo &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Biscoe &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 43.6 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 13.9 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; female &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 2008 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; Gentoo &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Biscoe &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 45.5 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 13.9 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; female &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 2008 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; Gentoo &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Biscoe &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 50.5 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 15.9 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; male &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 2008 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; Gentoo &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Biscoe &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 44.9 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 13.3 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; female &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 2008 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; Gentoo &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Biscoe &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 45.2 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 15.8 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; male &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 2008 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; Gentoo &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Biscoe &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 46.6 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 14.2 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; female &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 2008 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; Gentoo &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Biscoe &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 48.5 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 14.1 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; male &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 2008 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; Gentoo &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Biscoe &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 45.1 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 14.4 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; female &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 2008 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; Gentoo &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Biscoe &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 50.1 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 15.0 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; male &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 2008 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; Gentoo &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Biscoe &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 46.5 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 14.4 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; female &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 2008 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; Gentoo &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Biscoe &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 45.0 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 15.4 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; male &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 2008 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; Gentoo &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Biscoe &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 43.8 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 13.9 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; female &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 2008 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; Gentoo &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Biscoe &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 45.5 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 15.0 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; male &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 2008 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; Gentoo &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Biscoe &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 43.2 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 14.5 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; female &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 2008 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; Gentoo &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Biscoe &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 50.4 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 15.3 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; male &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 2008 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; Gentoo &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Biscoe &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 45.3 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 13.8 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; female &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 2008 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; Gentoo &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Biscoe &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 46.2 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 14.9 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; male &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 2008 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; Gentoo &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Biscoe &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 45.7 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 13.9 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; female &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 2008 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; Gentoo &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Biscoe &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 54.3 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 15.7 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; male &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 2008 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; Gentoo &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Biscoe &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 45.8 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 14.2 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; female &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 2008 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; Gentoo &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Biscoe &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 49.8 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 16.8 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; male &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 2008 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; Gentoo &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Biscoe &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 46.2 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 14.4 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; NA &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 2008 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; Gentoo &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Biscoe &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 49.5 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 16.2 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; male &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 2008 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; Gentoo &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Biscoe &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 43.5 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 14.2 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; female &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 2008 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; Gentoo &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Biscoe &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 50.7 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 15.0 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; male &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 2008 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; Gentoo &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Biscoe &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 47.7 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 15.0 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; female &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 2008 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; Gentoo &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Biscoe &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 46.4 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 15.6 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; male &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 2008 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; Gentoo &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Biscoe &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 48.2 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 15.6 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; male &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 2008 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; Gentoo &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Biscoe &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 46.5 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 14.8 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; female &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 2008 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; Gentoo &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Biscoe &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 46.4 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 15.0 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; female &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 2008 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; Gentoo &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Biscoe &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 48.6 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 16.0 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; male &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 2008 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; Gentoo &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Biscoe &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 47.5 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 14.2 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; female &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 2008 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; Gentoo &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Biscoe &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 51.1 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 16.3 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; male &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 2008 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; Gentoo &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Biscoe &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 45.2 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 13.8 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; female &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 2008 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; Gentoo &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Biscoe &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 45.2 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 16.4 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; male &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 2008 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; Gentoo &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Biscoe &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 49.1 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 14.5 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; female &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 2009 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; Gentoo &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Biscoe &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 52.5 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 15.6 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; male &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 2009 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; Gentoo &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Biscoe &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 47.4 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 14.6 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; female &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 2009 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; Gentoo &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Biscoe &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 50.0 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 15.9 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; male &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 2009 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; Gentoo &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Biscoe &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 44.9 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 13.8 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; female &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 2009 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; Gentoo &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Biscoe &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 50.8 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 17.3 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; male &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 2009 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; Gentoo &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Biscoe &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 43.4 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 14.4 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; female &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 2009 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; Gentoo &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Biscoe &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 51.3 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 14.2 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; male &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 2009 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; Gentoo &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Biscoe &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 47.5 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 14.0 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; female &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 2009 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; Gentoo &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Biscoe &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 52.1 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 17.0 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; male &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 2009 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; Gentoo &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Biscoe &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 47.5 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 15.0 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; female &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 2009 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; Gentoo &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Biscoe &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 52.2 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 17.1 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; male &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 2009 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; Gentoo &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Biscoe &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 45.5 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 14.5 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; female &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 2009 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; Gentoo &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Biscoe &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 49.5 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 16.1 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; male &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 2009 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; Gentoo &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Biscoe &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 44.5 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 14.7 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; female &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 2009 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; Gentoo &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Biscoe &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 50.8 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 15.7 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; male &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 2009 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; Gentoo &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Biscoe &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 49.4 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 15.8 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; male &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 2009 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; Gentoo &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Biscoe &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 46.9 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 14.6 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; female &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 2009 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; Gentoo &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Biscoe &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 48.4 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 14.4 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; female &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 2009 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; Gentoo &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Biscoe &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 51.1 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 16.5 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; male &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 2009 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; Gentoo &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Biscoe &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 48.5 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 15.0 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; female &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 2009 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; Gentoo &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Biscoe &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 55.9 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 17.0 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; male &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 2009 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; Gentoo &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Biscoe &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 47.2 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 15.5 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; female &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 2009 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; Gentoo &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Biscoe &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 49.1 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 15.0 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; male &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 2009 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; Gentoo &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Biscoe &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 47.3 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 13.8 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; NA &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 2009 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; Gentoo &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Biscoe &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 46.8 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 16.1 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; male &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 2009 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; Gentoo &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Biscoe &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 41.7 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 14.7 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; female &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 2009 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; Gentoo &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Biscoe &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 53.4 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 15.8 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; male &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 2009 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; Gentoo &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Biscoe &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 43.3 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 14.0 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; female &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 2009 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; Gentoo &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Biscoe &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 48.1 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 15.1 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; male &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 2009 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; Gentoo &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Biscoe &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 50.5 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 15.2 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; female &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 2009 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; Gentoo &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Biscoe &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 49.8 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 15.9 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; male &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 2009 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; Gentoo &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Biscoe &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 43.5 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 15.2 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; female &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 2009 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; Gentoo &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Biscoe &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 51.5 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 16.3 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; male &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 2009 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; Gentoo &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Biscoe &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 46.2 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 14.1 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; female &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 2009 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; Gentoo &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Biscoe &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 55.1 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 16.0 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; male &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 2009 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; Gentoo &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Biscoe &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 44.5 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 15.7 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; NA &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 2009 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; Gentoo &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Biscoe &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 48.8 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 16.2 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; male &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 2009 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; Gentoo &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Biscoe &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 47.2 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 13.7 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; female &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 2009 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; Gentoo &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Biscoe &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 46.8 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 14.3 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; female &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 2009 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; Gentoo &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Biscoe &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 50.4 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 15.7 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; male &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 2009 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; Gentoo &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Biscoe &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 45.2 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 14.8 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; female &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 2009 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; Gentoo &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Biscoe &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 49.9 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 16.1 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; male &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 2009 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; Chinstrap &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Dream &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 46.5 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 17.9 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; female &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 2007 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; Chinstrap &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Dream &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 50.0 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 19.5 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; male &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 2007 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; Chinstrap &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Dream &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 51.3 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 19.2 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; male &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 2007 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; Chinstrap &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Dream &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 45.4 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 18.7 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; female &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 2007 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; Chinstrap &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Dream &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 52.7 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 19.8 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; male &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 2007 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; Chinstrap &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Dream &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 45.2 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 17.8 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; female &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 2007 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; Chinstrap &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Dream &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 46.1 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 18.2 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; female &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 2007 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; Chinstrap &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Dream &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 51.3 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 18.2 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; male &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 2007 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; Chinstrap &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Dream &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 46.0 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 18.9 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; female &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 2007 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; Chinstrap &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Dream &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 51.3 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 19.9 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; male &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 2007 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; Chinstrap &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Dream &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 46.6 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 17.8 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; female &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 2007 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; Chinstrap &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Dream &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 51.7 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 20.3 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; male &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 2007 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; Chinstrap &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Dream &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 47.0 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 17.3 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; female &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 2007 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; Chinstrap &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Dream &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 52.0 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 18.1 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; male &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 2007 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; Chinstrap &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Dream &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 45.9 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 17.1 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; female &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 2007 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; Chinstrap &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Dream &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 50.5 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 19.6 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; male &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 2007 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; Chinstrap &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Dream &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 50.3 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 20.0 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; male &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 2007 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; Chinstrap &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Dream &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 58.0 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 17.8 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; female &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 2007 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; Chinstrap &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Dream &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 46.4 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 18.6 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; female &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 2007 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; Chinstrap &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Dream &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 49.2 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 18.2 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; male &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 2007 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; Chinstrap &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Dream &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 42.4 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 17.3 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; female &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 2007 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; Chinstrap &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Dream &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 48.5 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 17.5 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; male &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 2007 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; Chinstrap &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Dream &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 43.2 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 16.6 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; female &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 2007 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; Chinstrap &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Dream &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 50.6 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 19.4 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; male &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 2007 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; Chinstrap &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Dream &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 46.7 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 17.9 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; female &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 2007 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; Chinstrap &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Dream &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 52.0 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 19.0 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; male &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 2007 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; Chinstrap &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Dream &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 50.5 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 18.4 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; female &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 2008 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; Chinstrap &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Dream &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 49.5 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 19.0 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; male &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 2008 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; Chinstrap &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Dream &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 46.4 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 17.8 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; female &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 2008 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; Chinstrap &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Dream &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 52.8 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 20.0 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; male &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 2008 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; Chinstrap &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Dream &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 40.9 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 16.6 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; female &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 2008 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; Chinstrap &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Dream &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 54.2 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 20.8 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; male &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 2008 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; Chinstrap &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Dream &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 42.5 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 16.7 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; female &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 2008 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; Chinstrap &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Dream &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 51.0 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 18.8 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; male &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 2008 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; Chinstrap &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Dream &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 49.7 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 18.6 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; male &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 2008 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; Chinstrap &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Dream &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 47.5 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 16.8 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; female &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 2008 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; Chinstrap &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Dream &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 47.6 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 18.3 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; female &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 2008 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; Chinstrap &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Dream &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 52.0 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 20.7 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; male &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 2008 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; Chinstrap &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Dream &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 46.9 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 16.6 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; female &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 2008 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; Chinstrap &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Dream &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 53.5 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 19.9 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; male &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 2008 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; Chinstrap &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Dream &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 49.0 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 19.5 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; male &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 2008 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; Chinstrap &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Dream &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 46.2 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 17.5 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; female &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 2008 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; Chinstrap &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Dream &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 50.9 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 19.1 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; male &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 2008 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; Chinstrap &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Dream &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 45.5 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 17.0 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; female &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 2008 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; Chinstrap &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Dream &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 50.9 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 17.9 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; female &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 2009 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; Chinstrap &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Dream &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 50.8 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 18.5 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; male &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 2009 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; Chinstrap &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Dream &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 50.1 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 17.9 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; female &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 2009 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; Chinstrap &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Dream &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 49.0 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 19.6 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; male &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 2009 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; Chinstrap &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Dream &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 51.5 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 18.7 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; male &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 2009 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; Chinstrap &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Dream &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 49.8 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 17.3 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; female &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 2009 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; Chinstrap &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Dream &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 48.1 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 16.4 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; female &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 2009 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; Chinstrap &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Dream &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 51.4 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 19.0 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; male &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 2009 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; Chinstrap &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Dream &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 45.7 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 17.3 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; female &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 2009 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; Chinstrap &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Dream &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 50.7 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 19.7 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; male &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 2009 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; Chinstrap &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Dream &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 42.5 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 17.3 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; female &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 2009 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; Chinstrap &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Dream &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 52.2 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 18.8 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; male &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 2009 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; Chinstrap &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Dream &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 45.2 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 16.6 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; female &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 2009 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; Chinstrap &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Dream &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 49.3 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 19.9 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; male &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 2009 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; Chinstrap &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Dream &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 50.2 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 18.8 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; male &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 2009 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; Chinstrap &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Dream &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 45.6 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 19.4 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; female &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 2009 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; Chinstrap &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Dream &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 51.9 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 19.5 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; male &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 2009 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; Chinstrap &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Dream &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 46.8 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 16.5 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; female &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 2009 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; Chinstrap &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Dream &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 45.7 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 17.0 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; female &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 2009 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; Chinstrap &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Dream &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 55.8 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 19.8 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; male &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 2009 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; Chinstrap &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Dream &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 43.5 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 18.1 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; female &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 2009 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; Chinstrap &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Dream &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 49.6 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 18.2 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; male &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 2009 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; Chinstrap &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Dream &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 50.8 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 19.0 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; male &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 2009 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; Chinstrap &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Dream &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 50.2 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 18.7 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; female &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 2009 &lt;/td&gt;
+  &lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;&lt;/div&gt;
+]
+
+
+---
+.left-code[
+
+```r
+ggplot(pinguinos)
+```
+
+### Data
+
+]
+.right-plot[
+![](presentation_ggplot2_parte1_files/figure-html/gg-canvas1-1.svg)
+]
+
+---
+.left-code[
+
+```r
+ggplot(pinguinos,
+      aes(x=bill_length_mm, y=bill_depth_mm, 
+          color=species)) 
+```
+
+#### Data
+### Mapeos
+
+]
+.right-plot[
+![](presentation_ggplot2_parte1_files/figure-html/gg-canvas2-1.svg)
+]
+
+---
+.left-code[
+
+```r
+ggplot(pinguinos,
+      aes(x=bill_length_mm, y=bill_depth_mm, 
+          color=species)) +
+*    geom_point() 
+```
+
+#### Data
+#### Mapeos
+### Geometrías
+]
+.right-plot[
+![](presentation_ggplot2_parte1_files/figure-html/gg-canvas3-1.svg)
+]
+
+---
+.left-code[
+
+```r
+ggplot(pinguinos,
+      aes(x=bill_length_mm, y=bill_depth_mm, 
+          color=species)) +
+    geom_point() +
+*   scale_color_brewer(palette="Dark2") 
+```
+
+.pull-left[
+#### Data
+#### Mapeos
+#### Geometrías
+### Escalas
+]
+.pull-right[]
+]
+.right-plot[
+![](presentation_ggplot2_parte1_files/figure-html/gg-canvas4-1.svg)
+]
+
+---
+.left-code[
+
+```r
+ggplot(pinguinos,
+      aes(x=bill_length_mm, y=bill_depth_mm, 
+          color=species)) +
+    geom_point() +
+    scale_color_brewer(palette="Dark2") +
+*   stat_summary(fun="mean", geom= "line") 
+```
+
+.pull-left[
+#### Data
+#### Mapeos
+#### Geometrías
+#### Escalas
+]
+.pull-right[
+### Transformaciones estadísticas
+]
+]
+.right-plot[
+![](presentation_ggplot2_parte1_files/figure-html/gg-canvas5-1.svg)
+]
+
+---
+.left-code[
+
+```r
+ggplot(pinguinos,
+      aes(x=bill_length_mm, y=bill_depth_mm, 
+          color=species)) +
+    geom_point() +
+    scale_color_brewer(palette="Dark2") +
+    stat_summary(fun="mean", geom= "line") + 
+*   coord_flip()
+```
+
+.pull-left[
+#### Data
+#### Mapeos
+#### Geometrías
+#### Escalas
+]
+.pull-right[
+#### Transformaciones estadísticas
+### Sistemas de coordenadas
+]
+]
+.right-plot[
+![](presentation_ggplot2_parte1_files/figure-html/gg-canvas6-1.svg)
+]
+
+---
+.left-code[
+
+```r
+ggplot(pinguinos,
+      aes(x=bill_length_mm, y=bill_depth_mm, 
+          color=species)) +
+    geom_point() +
+    scale_color_brewer(palette="Dark2") +
+    stat_summary(fun="mean", geom= "line") + 
+    coord_flip() +
+*   facet_wrap(~species)
+```
+
+.pull-left[
+#### Data
+#### Mapeos
+#### Geometrías
+#### Escalas
+]
+.pull-right[
+#### Transformaciones estadísticas
+#### Sistemas de coordenadas
+### Paneles (facet)
+]
+]
+.right-plot[
+![](presentation_ggplot2_parte1_files/figure-html/gg-canvas7-1.svg)
+]
+
+---
+.left-code[
+
+```r
+ggplot(pinguinos,
+      aes(x=bill_length_mm, y=bill_depth_mm, 
+          color=species)) +
+    geom_point() +
+    scale_color_brewer(palette="Dark2") +
+    stat_summary(fun="mean", geom= "line") + 
+    coord_flip() +
+    facet_wrap(~species) +
+*   theme_bw() + theme(legend.position="top")
+```
+
+.pull-left[
+#### Data
+#### Mapeos
+#### Geometrías
+#### Escalas
+]
+.pull-right[
+#### Transformaciones estadísticas
+#### Sistemas de coordenadas
+#### Paneles (facet)
+### Temas
+]
+]
+.right-plot[
+![](presentation_ggplot2_parte1_files/figure-html/gg-canvas8-1.svg)
+]
+
+---
+.left-code[
+
+```r
+ggplot(pinguinos,
+      aes(x=bill_length_mm, y=bill_depth_mm, 
+          color=species)) +
+    geom_point() +
+    scale_color_brewer(palette="Dark2") +
+    stat_summary(fun="mean", geom= "line") + 
+    coord_flip() +
+    facet_wrap(~species) +
+    theme_bw() + theme(legend.position="top") +
+*   annotate("text", x=55, y=14.5, label="Pval")
+```
+
+.pull-left[
+#### Data
+#### Mapeos
+#### Geometrías
+#### Escalas
+]
+.pull-right[
+#### Transformaciones estadísticas
+#### Sistemas de coordenadas
+#### Paneles (facet)
+#### Temas
+### Anotaciones
+]
+]
+.right-plot[
+![](presentation_ggplot2_parte1_files/figure-html/gg-canvas9-1.svg)
+]
+
+
+&lt;!---------------------------------------- GGPLOT2 BASICS -----------------------------------&gt;
+---
+layout: false
+class: inverse, middle, center
+# ¡Vamos a darle una mirada más de cerca!
+
+---
+layout: true
+class: left, top
+
+## `ggplot2` básico
+
+---
+class: highlight
+
+.left-code[
+
+```r
+ggplot(pinguinos)
+```
+
+### Data
+
+]
+.right-plot[
+![](presentation_ggplot2_parte1_files/figure-html/gg-canvas1-1.svg)
+]
+
+---
+
+.left-column[
+
+## Data
+`ggplot()`
+
+]
+
+.right-column[
+
+El primer paso para graficar es tener tu data en formato __"adecuado"__ (_"tidy"_ o _"limpio"_):
+
+1. Cada __variable__ es una __columna__.
+2. Cada __observación__ es una __fila__.
+
+.pull-left[
+
+#### Formato ancho ("sucio") 
+
+ubigeo | casos_JOVEN | casos_ADULTO
+-----|---------------|----------------
+A	| 3	| 12
+B | 6 |	56
+C	| 8 |	2
+
+]
+
+.pull-right[
+
+#### Formato largo ("limpio") 
+
+ubigeo | EDAD | casos 
+-----|---------|----------
+A |	JOVEN | 3
+B	| JOVEN | 6
+C | JOVEN | 8
+A	| ADULTO	| 12
+B	| ADULTO	| 56
+C	| ADULTO	| 2
+]
+
+__¿Por qué?__ ¡Cada columna será una __capa__ del gráfico!
+
+(¿Cómo solucionarlo? ver [**aquí**](https://tidyr.tidyverse.org/reference/pivot_longer.html#examples) una alternativa)
+
+]
+
+
+---
+
+.left-column[
+
+## Data
+`ggplot()`
+
+]
+
+.right-column[
+
+El primer paso para graficar es tener tu data en formato __"limpio"__ (_"tidy"_):
+
+1. Cada __variable__ es una __columna__.
+2. Cada __observación__ es una __fila__.
+
+.pull-left[
+
+#### Formato ancho ("sucio") 
+
+ubigeo | IRA_joven | NEU_adulto
+-----|---------------|----------------
+A	| 3	| 12
+B | 6 |	56
+C	| 8 |	2
+
+]
+
+.pull-right[
+
+#### Formato largo ("limpio") 
+
+ubigeo | EDAD | casos | Dx
+-----|---------|----------|--------
+A |	joven | 3 | IRA
+B	| joven | 6 | IRA
+C | joven | 8 | IRA
+A	| adulto	| 12 | NEU
+B	| adulto	| 56 | NEU
+C	| adulto	| 2 | NEU
+]
+
+__¿Por qué?__ ¡Cada columna será una __capa__ del gráfico!
+
+(¿Cómo solucionarlo? ver [**aquí**](https://tidyr.tidyverse.org/reference/pivot_longer.html#examples) una alternativa)
+
+]
+
+
+---
+
+.left-column[
+
+## Data
+`ggplot()`
+
+]
+
+.right-column[
+
+Data en formato __"limpio"__ (_"tidy"_):
+
+1. Cada __variable__ es una __columna__.
+2. Cada __observación__ es una __fila__.
+
+__¿Reconoces esta base de datos?__
+
+
+si __SU OBJETIVO__ es hacer un grafico del numero de casos de EDA (todos los grupos de edad y tipos de edad) por semana
+
+__¿que opina del formato"?__
+
+&lt;img src="data/eda2019_cruda.PNG" width="50%" /&gt;
+
+ 
+]
+
+---
+
+.left-column[
+
+## Data
+`ggplot()`
+
+]
+
+.right-column[
+
+Data en formato __"limpio"__ (_"tidy"_):
+
+1. Cada __variable__ es una __columna__.
+2. Cada __observación__ es una __fila__.
+
+__¿Reconoces esta base de datos?__
+
+si __SU OBJETIVO__ es hacer un grafico del numero de casos de EDA (todos los grupos de edad y tipos de edad) por semana
+
+__¿que opina del formato"?__
+
+&lt;img src="data/eda2019_long.PNG" width="50%" /&gt;
+]
+
+
+
+---
+
+.left-column[
+
+## Data
+`ggplot()`
+
+]
+
+.right-column[
+
+Data en formato __"limpio"__ (_"tidy"_):
+
+1. Cada __variable__ es una __columna__.
+2. Cada __observación__ es una __fila__.
+
+
+
+
+```r
+pinguinos
+```
+
+```
+## # A tibble: 342 x 6
+##    species island    bill_length_mm bill_depth_mm sex     year
+##    &lt;fct&gt;   &lt;fct&gt;              &lt;dbl&gt;         &lt;dbl&gt; &lt;fct&gt;  &lt;int&gt;
+##  1 Adelie  Torgersen           39.1          18.7 male    2007
+##  2 Adelie  Torgersen           39.5          17.4 female  2007
+##  3 Adelie  Torgersen           40.3          18   female  2007
+##  4 Adelie  Torgersen           36.7          19.3 female  2007
+##  5 Adelie  Torgersen           39.3          20.6 male    2007
+##  6 Adelie  Torgersen           38.9          17.8 female  2007
+##  7 Adelie  Torgersen           39.2          19.6 male    2007
+##  8 Adelie  Torgersen           34.1          18.1 &lt;NA&gt;    2007
+##  9 Adelie  Torgersen           42            20.2 &lt;NA&gt;    2007
+## 10 Adelie  Torgersen           37.8          17.1 &lt;NA&gt;    2007
+## # … with 332 more rows
+```
+
+
+]
+
+
+
+
+---
+class: highlight
+
+.left-code[
+
+```r
+ggplot(pinguinos,
+      aes(x=bill_length_mm, y=bill_depth_mm, 
+          color=species)) 
+```
+
+#### Data
+### Mapeos
+
+]
+.right-plot[
+![](presentation_ggplot2_parte1_files/figure-html/gg-canvas2-1.svg)
+]
+
+---
+.left-column[
+### Data
+## Mapeos
+`aes()`
+]
+
+.right-column[
+El argumento __mapping__ indica cómo mapeamos la __columna de datos__ a elementos visuales o parámetros:
+
+- Variable 1 → **x**
+- Variable 2 → **y**
+- Variable 3 → **color**, fill, shape, etc.
+
+Los __nombres de columna__:
+
+- Deben especificarse __dentro de la función `aes()`__
+- No requieren de comillas :)
+
+Extra:
+
+- La función `aes()` es una contracción de _"aesthetics"_, __Estética__ en español.
+
+
+```r
+*ggplot(data = pinguinos, 
+       mapping = aes(x = bill_length_mm, 
+                     y = bill_depth_mm, 
+                     color = species))
+```
+
+
+]
+
+
+---
+.left-column[
+### Data
+## Mapeos
+`aes()`
+]
+
+.right-column[
+El argumento __mapping__ indica cómo mapeamos la __columna de datos__ a elementos visuales o parámetros:
+
+- Variable 1 → **x**
+- Variable 2 → **y**
+- Variable 3 → **color**, fill, shape, etc.
+
+Los __nombres de columna__:
+
+- Deben especificarse __dentro de la función `aes()`__
+- No requieren de comillas :)
+
+Extra:
+
+- La función `aes()` es una contracción de _"aesthetics"_, __Estética__ en español.
+
+
+```r
+*ggplot(pinguinos, 
+       aes(x = bill_length_mm, 
+           y = bill_depth_mm, 
+           color = species))
+```
+
+
+]
+
+
+---
+class: highlight
+
+.left-code[
+
+```r
+ggplot(pinguinos,
+      aes(x=bill_length_mm, y=bill_depth_mm, 
+          color=species)) +
+*    geom_point() 
+```
+
+#### Data
+#### Mapeos
+### Geometrías
+]
+.right-plot[
+![](presentation_ggplot2_parte1_files/figure-html/gg-canvas3-1.svg)
+]
+
+---
+.left-column[
+### Data
+### Mapeos
+## Geometrías
+`geom_*()`
+]
+
+.right-column[
+Las **geometrías** indican cuáles formas geométricas deben ser graficadas usando los parámetros y variables definidas en `aes()`.
+
+
+
+
+
+
+
+
+
+
+
+
+
+Tipo       | Función           | Imagen
+-----------|--------------------|-----------------------------------------------
+Punto      | `geom_point()`     | ![](presentation_ggplot2_parte1_files/figure-html/geom-point-1.svg)
+Linea       | `geom_line()`      | ![](presentation_ggplot2_parte1_files/figure-html/geom-line-1.svg)
+Barra        | `geom_bar()`       | ![](presentation_ggplot2_parte1_files/figure-html/geom-bar-1.svg)
+Histograma  | `geom_histogram()` | ![](presentation_ggplot2_parte1_files/figure-html/geom-hist-1.svg)
+Regresión | `geom_smooth()`    | ![](presentation_ggplot2_parte1_files/figure-html/geom-smooth-1.svg)
+Cajas    | `geom_boxplot()`   | ![](presentation_ggplot2_parte1_files/figure-html/geom-box-1.svg)
+]
+
+---
+.left-column[
+### Data
+### Mapeos
+## Geometrías
+`geom_*()`
+]
+
+.right-column[
+Estas son algunas de las __funciones `geom_*`__ disponibles:
+
+
+```
+##  [1] "geom_abline"            "geom_area"              "geom_bar"              
+##  [4] "geom_bin2d"             "geom_blank"             "geom_boxplot"          
+##  [7] "geom_col"               "geom_contour"           "geom_contour_filled"   
+## [10] "geom_count"             "geom_crossbar"          "geom_curve"            
+## [13] "geom_density"           "geom_density_2d"        "geom_density_2d_filled"
+## [16] "geom_density2d"         "geom_density2d_filled"  "geom_dotplot"          
+## [19] "geom_errorbar"          "geom_errorbarh"         "geom_freqpoly"         
+## [22] "geom_function"          "geom_hex"               "geom_histogram"        
+## [25] "geom_hline"             "geom_jitter"            "geom_label"            
+## [28] "geom_line"              "geom_linerange"         "geom_map"              
+## [31] "geom_path"              "geom_point"             "geom_pointrange"       
+## [34] "geom_polygon"           "geom_qq"                "geom_qq_line"          
+## [37] "geom_quantile"          "geom_raster"            "geom_rect"             
+## [40] "geom_ribbon"            "geom_rug"               "geom_segment"          
+## [43] "geom_sf"                "geom_sf_label"          "geom_sf_text"          
+## [46] "geom_smooth"            "geom_spoke"             "geom_step"             
+## [49] "geom_text"              "geom_tile"              "geom_violin"           
+## [52] "geom_vline"
+```
+]
+
+---
+.left-column[
+### Data
+### Mapeos
+## Geometrías
+`geom_*()`
+]
+
+.right-column[
+**¡Recomendamos en un 100% usar las "Hojas de Plagio" o [Cheatsheets (ver)](https://drive.google.com/file/d/1Mz_uNvvlH9grqIRe8S_xeYe3ag3G5Sv8/view?usp=sharing)!**
+
+&lt;img src="data/ggplot-hoja.PNG" width="100%" /&gt;
+
+]
+
+---
+layout: true
+class: left, top
+
+## `ggplot2` básico
+
+
+
+---
+class: highlight
+
+.left-code[
+
+```r
+ggplot(pinguinos,
+      aes(x=bill_length_mm, y=bill_depth_mm, 
+          color=species)) +
+*    geom_point() 
+```
+
+#### Data
+#### Mapeos
+### Geometrías
+]
+.right-plot[
+![](presentation_ggplot2_parte1_files/figure-html/gg-canvas3-1.svg)
+]
+
+
+
+---
+.left-column[
+### Data
+### Mapeos
+## Geometrías
+`geom_*()`
+]
+
+.right-column[
+Puedes definir __Mapeos__ para:
+- el **gráfico completo** incluyéndolo en la función `ggplot()`.
+- una **geometría específica** incluyéndolo en la función `geom_xxx()`.
+
+
+```r
+A &lt;- ggplot(pinguinos, aes(x = bill_length_mm, y = bill_depth_mm, 
+*                    color=species)) +
+     geom_point() + 
+     geom_line()
+#.
+#.
+#.
+#.
+```
+
+
+
+![](presentation_ggplot2_parte1_files/figure-html/mapeo01-1.svg)
+
+]
+
+
+---
+.left-column[
+### Data
+### Mapeos
+## Geometrías
+`geom_*()`
+]
+
+.right-column[
+Puedes definir __Mapeos__ para:
+- el **gráfico completo** incluyéndolo en la función `ggplot()`.
+- una **geometría específica** incluyéndolo en la función `geom_xxx()`.
+
+
+```r
+A &lt;- ggplot(pinguinos, aes(x = bill_length_mm, y = bill_depth_mm, 
+*                    color=species)) +
+     geom_point() + 
+     geom_line()
+
+B &lt;- ggplot(pinguinos, aes(x = bill_length_mm, y = bill_depth_mm)) +
+     geom_point() +
+*   geom_line(aes(color=species))
+```
+
+
+
+![](presentation_ggplot2_parte1_files/figure-html/mapeo01b-1.svg)
+
+]
+
+
+
+---
+layout: false
+class: inverse, middle, center
+
+# ¡Tiempo para algunos ejemplos y ejercicios!
+
+
+---
+layout: true
+class: left, top
+
+## Aplicación 1 
+
+---
+.left-code[
+### Grafique un __Diagrama de Columnas__ con el "Número de Casos" por cada Semana Epidemiológica ("SE") a nivel Nacional
+
+1. _Usar_ data_covid.
+1. _Retirar_ filas con edades negativas.
+1. _Calcular_ la "SE" usando la fecha de resultados.
+1. _Calcular_ la cantidad de casos por cada "SE".
+1. _Transformar_ la variable "SE" a clase factor.
+1. **Mapear x: "SE" y: "Número de Casos"**
+1. **Usar la geometría `geom_col()`**
+
+
+```r
+# library(tidyverse); install.packages(aweek); library(aweek)
+data_covid %&gt;% 
+  filter(EDAD &gt;= 0) %&gt;% 
+* mutate(SEMANA_EPI = date2week(FECHA_RESULTADO,
+*                               floor_day = TRUE,
+*                               week_start = "Sunday")) %&gt;%
+  count(SEMANA_EPI) %&gt;% 
+  mutate(SEMANA_EPI = as.factor(SEMANA_EPI))
+```
+
+]
+.right-plot[
+
+
+```
+## # A tibble: 5 x 2
+##   SEMANA_EPI     n
+## * &lt;fct&gt;      &lt;int&gt;
+## 1 2020-W53    2238
+## 2 2021-W01   17604
+## 3 2021-W02   26247
+## 4 2021-W03   34530
+## 5 2021-W04   21578
+```
+
+
+]
+
+---
+layout: true
+class: left, top
+
+## Aplicación 1 
+
+---
+.left-code[
+### Grafique un __Diagrama de Columnas__ con el "Número de Casos" por cada Semana Epidemiológica ("SE") a nivel Nacional
+
+1. _Retirar_ filas con edades negativas.
+1. _Calcular_ la "SE" usando la fecha de resultados.
+1. _Calcular_ la cantidad de casos por cada "SE".
+1. _Transformar_ la variable "SE" a clase factor.
+1. **Mapear x: "SE" y: "Número de Casos"**
+1. **Usar la geometría `geom_col()`**
+
+
+```r
+# library(tidyverse); install.packages(aweek); library(aweek)
+data_covid %&gt;% 
+  filter(EDAD &gt;= 0) %&gt;% 
+  mutate(SEMANA_EPI = date2week(FECHA_RESULTADO, 
+                                floor_day = TRUE,
+                                week_start = "Sunday")) %&gt;% 
+  count(SEMANA_EPI) %&gt;% 
+  mutate(SEMANA_EPI = as.factor(SEMANA_EPI)) %&gt;% 
+* ggplot(aes(x = SEMANA_EPI,y = n))
+```
+
+]
+.right-plot[
+![](presentation_ggplot2_parte1_files/figure-html/example-1-1.svg)
+]
+
+---
+layout: true
+class: left, top
+
+## Aplicación 1 
+
+---
+.left-code[
+### Grafique un __Diagrama de Columnas__ con el "Número de Casos" por cada Semana Epidemiológica ("SE") a nivel Nacional
+
+1. _Retirar_ filas con edades negativas.
+1. _Calcular_ la "SE" usando la fecha de resultados.
+1. _Calcular_ la cantidad de casos por cada "SE".
+1. _Transformar_ la variable "SE" a clase factor.
+1. **Mapear x: "SE" y: "Número de Casos"**
+1. **Usar la geometría `geom_col()`**
+
+
+```r
+# library(tidyverse); install.packages(aweek); library(aweek)
+data_covid %&gt;% 
+  filter(EDAD &gt;= 0) %&gt;% 
+  mutate(SEMANA_EPI = date2week(FECHA_RESULTADO,
+                                floor_day = TRUE,
+                                week_start = "Sunday")) %&gt;% 
+  count(SEMANA_EPI) %&gt;% 
+  mutate(SEMANA_EPI = as.factor(SEMANA_EPI)) %&gt;% 
+  ggplot(aes(x = SEMANA_EPI,y = n)) +
+* geom_col()
+```
+
+]
+.right-plot[
+![](presentation_ggplot2_parte1_files/figure-html/example-10-1.svg)
+]
+
+
+
+---
+layout: false
+class: inverse, center, middle
+
+#Fin
+
+&lt;img src="https://media.giphy.com/media/QW5nKIoebG8y4/giphy.gif" width="50%" /&gt;
+
+
+
+
+
+---
+layout: false
+class: inverse, middle, center
+    </textarea>
+<style data-target="print-only">@media screen {.remark-slide-container{display:block;}.remark-slide-scaler{box-shadow:none;}}</style>
+<script src="https://remarkjs.com/downloads/remark-latest.min.js"></script>
+<script>var slideshow = remark.create({
+"ratio": "16:9",
+"highlightStyle": "github",
+"highlightLines": true,
+"countIncrementalSlides": false,
+"slideNumberFormat": "<div class=\"progress-bar-container\">\n  <div class=\"progress-bar\" style=\"width: calc(%current% / %total% * 100%);\">\n  </div>\n</div>"
+});
+if (window.HTMLWidgets) slideshow.on('afterShowSlide', function (slide) {
+  window.dispatchEvent(new Event('resize'));
+});
+(function(d) {
+  var s = d.createElement("style"), r = d.querySelector(".remark-slide-scaler");
+  if (!r) return;
+  s.type = "text/css"; s.innerHTML = "@page {size: " + r.style.width + " " + r.style.height +"; }";
+  d.head.appendChild(s);
+})(document);
+
+(function(d) {
+  var el = d.getElementsByClassName("remark-slides-area");
+  if (!el) return;
+  var slide, slides = slideshow.getSlides(), els = el[0].children;
+  for (var i = 1; i < slides.length; i++) {
+    slide = slides[i];
+    if (slide.properties.continued === "true" || slide.properties.count === "false") {
+      els[i - 1].className += ' has-continuation';
+    }
+  }
+  var s = d.createElement("style");
+  s.type = "text/css"; s.innerHTML = "@media print { .has-continuation { display: none; } }";
+  d.head.appendChild(s);
+})(document);
+// delete the temporary CSS (for displaying all slides initially) when the user
+// starts to view slides
+(function() {
+  var deleted = false;
+  slideshow.on('beforeShowSlide', function(slide) {
+    if (deleted) return;
+    var sheets = document.styleSheets, node;
+    for (var i = 0; i < sheets.length; i++) {
+      node = sheets[i].ownerNode;
+      if (node.dataset["target"] !== "print-only") continue;
+      node.parentNode.removeChild(node);
+    }
+    deleted = true;
+  });
+})();
+(function() {
+  "use strict"
+  // Replace <script> tags in slides area to make them executable
+  var scripts = document.querySelectorAll(
+    '.remark-slides-area .remark-slide-container script'
+  );
+  if (!scripts.length) return;
+  for (var i = 0; i < scripts.length; i++) {
+    var s = document.createElement('script');
+    var code = document.createTextNode(scripts[i].textContent);
+    s.appendChild(code);
+    var scriptAttrs = scripts[i].attributes;
+    for (var j = 0; j < scriptAttrs.length; j++) {
+      s.setAttribute(scriptAttrs[j].name, scriptAttrs[j].value);
+    }
+    scripts[i].parentElement.replaceChild(s, scripts[i]);
+  }
+})();
+(function() {
+  var links = document.getElementsByTagName('a');
+  for (var i = 0; i < links.length; i++) {
+    if (/^(https?:)?\/\//.test(links[i].getAttribute('href'))) {
+      links[i].target = '_blank';
+    }
+  }
+})();
+// adds .remark-code-has-line-highlighted class to <pre> parent elements
+// of code chunks containing highlighted lines with class .remark-code-line-highlighted
+(function(d) {
+  const hlines = d.querySelectorAll('.remark-code-line-highlighted');
+  const preParents = [];
+  const findPreParent = function(line, p = 0) {
+    if (p > 1) return null; // traverse up no further than grandparent
+    const el = line.parentElement;
+    return el.tagName === "PRE" ? el : findPreParent(el, ++p);
+  };
+
+  for (let line of hlines) {
+    let pre = findPreParent(line);
+    if (pre && !preParents.includes(pre)) preParents.push(pre);
+  }
+  preParents.forEach(p => p.classList.add("remark-code-has-line-highlighted"));
+})(document);</script>
+
+<script>
+slideshow._releaseMath = function(el) {
+  var i, text, code, codes = el.getElementsByTagName('code');
+  for (i = 0; i < codes.length;) {
+    code = codes[i];
+    if (code.parentNode.tagName !== 'PRE' && code.childElementCount === 0) {
+      text = code.textContent;
+      if (/^\\\((.|\s)+\\\)$/.test(text) || /^\\\[(.|\s)+\\\]$/.test(text) ||
+          /^\$\$(.|\s)+\$\$$/.test(text) ||
+          /^\\begin\{([^}]+)\}(.|\s)+\\end\{[^}]+\}$/.test(text)) {
+        code.outerHTML = code.innerHTML;  // remove <code></code>
+        continue;
+      }
+    }
+    i++;
+  }
+};
+slideshow._releaseMath(document);
+</script>
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+(function () {
+  var script = document.createElement('script');
+  script.type = 'text/javascript';
+  script.src  = 'https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML';
+  if (location.protocol !== 'file:' && /^https?:/.test(script.src))
+    script.src  = script.src.replace(/^https?:/, '');
+  document.getElementsByTagName('head')[0].appendChild(script);
+})();
+</script>
+  </body>
+</html>
